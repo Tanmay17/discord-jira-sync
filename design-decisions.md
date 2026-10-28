@@ -1,0 +1,27 @@
+# Design decisions — 2026-10-28
+
+## Scope and clarification
+The initial hiring-team message is in docs/initial-proposal.md. It is a draft, not sent. No clarification response has been received. Explicit assumptions: textual comment attribution; blocked represented by a label; missing mappings fail visibly; bot must have Manage Threads to enumerate private archives. No edits/deletes/renames or Jira project creation. Channel suffix must match a valid simple Jira key (letters then alphanumerics); hyphenated suffixes are skipped rather than guessed.
+
+## Durable inbox in Postgres
+Discord events are inserted under stable Discord IDs before processing. Gateway replay and paginated scans use the same INSERT ON CONFLICT path. Alternatives: an in-memory queue loses work; Redis adds an operational dependency; a full broker is beyond this prototype. Postgres provides durable storage and inspectable failures. Five-minute full rescans repair gateway/DB failures and recover messages created while offline. This costs API calls and retains all event payloads; cursor-based ingestion with overlap is the next improvement.
+
+## External writes: duplicate prevention over availability
+Jira REST does not expose a general client-supplied idempotency key. A Postgres transaction cannot atomically commit a Jira request. Before writing we persist an uncertain mutation record. After acknowledgement we save the result. Replays of completed mutations never write. After a crash the engine searches an issue label, paginated comment marker, or expected status before accepting completion. If absence cannot prove that a request was rejected, the engine holds the event instead of retrying the write. Definitive 4xx/429 responses can release the intent; timeouts, 5xx responses and process crashes cannot.
+
+This deliberately does NOT claim mathematically guaranteed exactly-once delivery across independent systems. Jira search indexing can lag, so a missing issue marker is never permission to repeat an ambiguous create. Operator intervention is required for unresolved outcomes. Stable markers are created in the same request as their issue/comment, avoiding a second marker-write gap. Human removal of markers, manual duplication, external workflow changes and multiple databases sharing one Discord/Jira integration are outside this guarantee. Reserve the discord-thread-* labels and discord-message:* markers.
+
+## One active process, ordered worker
+A dedicated Postgres advisory-lock connection excludes another process using the same database. Losing that connection exits the process. The single worker drains by numeric Discord snowflake order, waits for startup scan, and blocks later messages behind unresolved earlier events in the same thread. Other threads can progress. This is simple to reason about at demo scale. It is not high availability or horizontal scaling. Production needs partitioning by thread, session fencing and bounded concurrency. A late-arriving older event after a newer event was already applied can transiently regress status; full event-order watermarks/reconciliation are not implemented.
+
+## Reporter and comment author
+User mapping is a JSON configuration file with Discord IDs as keys and Jira account IDs as values. Missing mappings fail the event rather than silently attribute work to someone else. Reporter requires Jira Modify Reporter permission. Jira comments are authenticated as the service account; the body explicitly names and links the original Discord author. OAuth impersonation was rejected for scope, not presented as equivalent attribution.
+
+## Status semantics
+Last supported status token in a message wins (case-insensitive). A message always becomes a comment before its status is applied. Available transitions are discovered using destination status names, never hardcoded IDs. A blocked command adds discord-blocked, retaining the workflow status. Any supported non-blocked command removes that label, then transitions if needed. An unavailable workflow transition fails visibly and holds subsequent events in that thread. No multi-hop transition guessing.
+
+## Backfill and deployment
+Active, public archived and private archived threads are enumerated, then messages fetched in pages of 100 and replayed oldest first. The prototype buffers one thread's history in memory, a conscious scaling limit. Docker Compose supplies durable Postgres; a public host must supply persistent disk and HTTPS termination. CI checks strict TypeScript, tests and build. Main-branch publication pushes Docker Hub tags, but does not remotely deploy a host; host rollout is documented and manual. No fake health URL, invite, image publication or live demo is claimed.
+
+## Testing approach
+Initial domain and recovery tests were written alongside implementation in this AI session, not a fabricated historical red/green record. Subsequent client and database checks exercise actual failure boundaries. Unit tests cannot validate real Jira permissions, Discord intents or account configuration; the acceptance walkthrough remains mandatory before submission.
