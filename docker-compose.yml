@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: sync
+      POSTGRES_USER: sync
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U sync -d sync"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+  bot:
+    image: ${SYNC_IMAGE:-discord-jira-sync:local}
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: postgres://sync:${POSTGRES_PASSWORD}@db:5432/sync
+      USER_MAP_PATH: /app/config/users.json
+    volumes:
+      - ./config/users.json:/app/config/users.json:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    stop_grace_period: 60s
+volumes:
+  postgres-data:
