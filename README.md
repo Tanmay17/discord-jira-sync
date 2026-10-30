@@ -2,7 +2,9 @@
 
 TypeScript/Node service that mirrors Discord project activity into existing Jira Cloud projects using Postgres as a durable inbox and mutation journal.
 
-**Delivery status:** running locally against real Jira/Discord accounts. Story creation, attributed comments, blocked-label handling, In Progress/Done transitions, offline history recovery and repeated startup replay are verified. Docker Hub publication and repeated resync replies are verified; the published image has been pulled and run locally with health 200 and duplicate-free replay. Public deployment remains pending. Public health URL: **pending deployment**. Discord invite: **pending server setup**. Published Docker Hub image: [tanmays321/discord-jira-sync](https://hub.docker.com/r/tanmays321/discord-jira-sync). Verified published tag: `794674386edf34e0f31dc1fd743d0014df529213`. Do not submit these placeholders as a completed live demo.
+**Delivery status:** built and tested locally against real Jira/Discord accounts, with code checked into this repository. The hiring team revised the deliverable on 2026-10-30 to implementation, local testing and repository sharing; public deployment is not required. All 25 automated tests passed, along with lint, type checking and build. Live checks verified Story creation, attributed comments, all supported status transitions, blocked-label clearing, offline recovery and repeated resync/restart without duplicates. See [validation](docs/validation.md) and [evidence](docs/evidence/). Repository access must be granted to the hiring team's reviewers before submission.
+
+An optional published Docker image is available at [tanmays321/discord-jira-sync](https://hub.docker.com/r/tanmays321/discord-jira-sync), verified tag `794674386edf34e0f31dc1fd743d0014df529213`. Public hosting, HTTPS and a hosted demo are outside the revised submission scope.
 
 ## Behavior
 
@@ -59,19 +61,19 @@ docker compose exec db psql -U sync -d sync -c "SELECT id,state,error FROM event
 
 For safe recovery, follow [operations](docs/operations.md); do not delete journals to retry blindly. SIGTERM stops ingestion, finishes the current event and closes connections. Compose allows 60 seconds before killing the process; longer partial writes remain reconcilable or held.
 
-## CI/CD and deployment
+## CI and optional deployment
 
-Every push and PR runs type checking, tests and compilation. A push to main additionally builds/pushes Docker Hub `latest` and commit-SHA tags after checks. Set GitHub Actions secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. Protect main so updates require passing PR checks. Deploy the immutable SHA image on a persistent host; the optional compose.production.yml adds an HTTPS proxy and removes direct port-3000 exposure (Compose 2.24.4+). See [deployment](docs/deployment.md). Publishing an image does not automatically roll out the host.
+Every push and PR runs type checking, tests and compilation. A push to main additionally builds/pushes Docker Hub `latest` and commit-SHA tags after checks. Set GitHub Actions secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. Protect main so updates require passing PR checks. For optional hosting, deploy the immutable SHA image on a persistent host; the optional compose.production.yml adds an HTTPS proxy and removes direct port-3000 exposure (Compose 2.24.4+). See [deployment](docs/deployment.md). Publishing an image does not automatically roll out the host.
 
 ## Acceptance walkthrough
 
-1. Complete service setup, deploy and replace pending URLs above. Verify public `/health` returns 200.
+1. Complete local service setup and verify `http://localhost:3000/health` returns 200. Public deployment is not required.
 2. Create a thread in `proj-checkout` where Jira `CHECKOUT` already exists; confirm a Story with reporter and discord-thread-* label.
 3. Post a normal message, then `wrapping this up, status: done`; verify exactly one comment per message and Done status.
 4. Run `!resync` twice; inspect queue summary and confirm issue/comment counts do not increase.
 5. Stop bot, post multiple messages (including in an archived thread), restart; confirm ordered comments and no duplicates after a second restart.
 6. Exercise missing mappings/project, unavailable transitions and blocked-label clearing. Stop the process during a Jira request and follow operations reconciliation.
-7. Pull the SHA-tagged image with a separate configured integration and repeat. Save Jira screenshots or a short recording under docs/evidence/ (redact private data).
+7. Review the recorded evidence under docs/evidence/. Additional independent-integration runs and demo recordings are optional validation; documented unverified cases remain limitations.
 
 ## From prototype to production
 

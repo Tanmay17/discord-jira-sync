@@ -1,3 +1,5 @@
+> Scope update (2026-10-30): the hiring team requires implementation, local testing and repository sharing only. This deployment runbook is optional; no public host is required for submission.
+
 # Deployment runbook
 
 Use a persistent Linux host with Docker Compose. This service maintains a long-lived Discord websocket; request the offered VM if free hosting cannot provide an always-on process and durable disk. No paid resources are provisioned by this repository.

@@ -1,8 +1,18 @@
 # Assignment completion checklist
 
-Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; core live mutations and offline recovery verified; publishing verified; public host remains pending. This is a status inventory, not a fresh rerun of validation.
+Review date: 2026-10-30.
 
-Legend: checked = completed with available evidence; unchecked = pending or unverified. Implementation does not imply real-account acceptance. Local validation recorded on 2026-10-28: 20 tests passed, ESLint/typecheck/build passed, Compose validated, production image built and connected to Postgres as a non-root user. See validation.md.
+## Current deliverable — revised by the hiring team
+
+The candidate relayed the revised scope on 2026-10-30: build the application, test locally, check the code into a repository and share that repository. Public deployment is no longer required.
+
+- [x] Implement the Node.js/TypeScript application.
+- [x] Test locally: 25 automated tests, lint, type checking and build passed; real Jira/Discord sync, statuses, resync and offline recovery verified. See validation.md and evidence/.
+- [x] Check implementation and evidence into the GitHub repository.
+- [ ] Grant hiring-team reviewers access to the private repository and share its URL.
+- [ ] Candidate reviews the implementation and documented limitations for the interview.
+
+The detailed inventory below preserves verification gaps and earlier planning. Unchecked deployment, public URL, Discord invite, screenshots and host-recovery items are optional under the revised scope; they are not submission blockers. Unverified behavior remains documented rather than claimed as tested. Earlier test counts are historical snapshots; the latest suite has 25 passing tests.
 
 ## 1. Requirements and communication
 
@@ -111,7 +121,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Docker Hub account/repository and publishing token configured.
 - [ ] Select persistent public deployment host or request the offered VM.
 
-## 8. CI/CD and deployment
+## 8. CI/CD and optional deployment
 
 - [x] Commit push/PR CI workflow with Postgres service, lint, full tests and build.
 - [x] Commit main-branch Docker Hub build/push workflow with latest and SHA tags.
@@ -131,7 +141,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [ ] Record actual public URL and image reference in README.
 - [ ] Automate host rollout only if desired; current CD publishes an image, while host deployment is manual.
 
-## 9. Reviewer acceptance — all must be verified live
+## 9. Detailed live verification inventory
 
 - [ ] Reviewer can visit public /health and receive 200.
 - [ ] Reviewer can join the test Discord server.
@@ -162,14 +172,10 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [ ] Candidate reviews architecture, failure modes, code and operational limits for interview discussion.
 - [ ] Final clean-install/checks, reviewer access check and submission message.
 
-## Recommended next order
+## Final handoff order
 
-1. Finish Docker Hub/GitHub secret setup and choose a public host.
-2. Verify real !resync replies and remaining status/thread/reporter cases.
-3. Publish the image after full CI checks; pull it independently.
-4. Deploy publicly, verify health/recovery and collect screenshots.
-5. Finish invite/reviewer access, URLs, transcripts and submission review.
+1. Candidate reviews architecture, failure modes and documented test limitations.
+2. Obtain the hiring team's GitHub username(s) or organization and grant private-repository access.
+3. Share https://github.com/Tanmay17/discord-jira-sync with the hiring team.
 
-Overall: core implementation and recorded local validation are done. Real integration, hosted delivery and submission acceptance remain open. No numerical completion percentage is assigned because those open steps can reveal implementation changes.
-
-Hosting decision: Oracle account setup deferred by the user on 2026-10-30. Public deployment, DNS/TLS and reviewer access remain pending until a VM is available.
+Public hosting, DNS/TLS, public health URL and hosted-demo access are outside the revised deliverable. Existing deployment files and runbooks remain available for optional future use.
