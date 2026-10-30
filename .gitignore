@@ -5,3 +5,8 @@ coverage/
 *.log
 
 config/users.json
+
+.local/
+
+__pycache__/
+*.pyc

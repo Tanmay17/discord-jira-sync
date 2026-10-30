@@ -1,0 +1,21 @@
+# Docker Compose >=2.24.4; use together with docker-compose.yml.
+services:
+  bot:
+    ports: !reset []
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?Set PUBLIC_HOST to the DNS name pointing at this host}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - bot
+volumes:
+  caddy-data:
+  caddy-config:

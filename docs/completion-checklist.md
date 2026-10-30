@@ -1,6 +1,6 @@
 # Assignment completion checklist
 
-Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; live mutations remain pending. This is a status inventory, not a fresh rerun of validation.
+Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; core live mutations and offline recovery verified; publishing/public host remain pending. This is a status inventory, not a fresh rerun of validation.
 
 Legend: checked = completed with available evidence; unchecked = pending or unverified. Implementation does not imply real-account acceptance. Local validation recorded on 2026-10-28: 20 tests passed, ESLint/typecheck/build passed, Compose validated, production image built and connected to Postgres as a non-root user. See validation.md.
 
@@ -13,7 +13,8 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Receive and record clarification answers (2026-10-30).
 - [ ] Confirm whether the full initial design proposal was also shared.
 - [x] Update missing-user behavior, regression tests and clarification documentation.
-- [ ] Verify the clarified behavior on real accounts.
+- [x] Bot attribution, unmapped authors and blocked-label clearing verified on real accounts.
+- [ ] Verify remaining command/private-thread/mapped-reporter cases.
 - [x] Draft a progress update.
 - [ ] Send actual daily updates during remaining work; the saved draft is not a sent update.
 - [x] Record design choices and accepted tradeoffs in design-decisions.md.
@@ -21,14 +22,14 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 ## 2. Repository and developer setup
 
 - [x] Connect to Tanmay17/discord-jira-sync and preserve the initial commit.
-- [x] Push four incremental implementation/documentation commits to main.
+- [x] Push incremental implementation/documentation commits to main.
 - [x] Configure TypeScript strict mode, ESLint, build and test scripts.
 - [x] Specify Node 22.12+ and provide .nvmrc.
 - [x] Commit package lockfile for reproducible installs.
 - [x] Provide environment and user-map examples; ignore real .env and mapping files.
-- [ ] Confirm repository visibility is private in GitHub settings.
+- [x] Confirm private repository and not a fork via authenticated GitHub API.
 - [ ] Grant hiring-team repository access; obtain GitHub username if email invite is unavailable.
-- [ ] Confirm GitHub-hosted CI results; local passes are not proof of hosted CI success.
+- [x] GitHub-hosted CI passed for bc1b543; rerun/check latest pushed changes.
 - [ ] Configure branch protection / required checks.
 
 ## 3. Jira client and sync engine — implementation complete, live verification pending
@@ -74,13 +75,14 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Add retry scheduling and inspectable failed/uncertain states.
 - [x] Document operator reconciliation and graceful shutdown.
 - [x] Test real Postgres ingestion deduplication, persistence, replay, ambiguous issue/comment recovery and ordering.
-- [ ] Test stop/offline-post/restart recovery with real Discord and Jira.
+- [x] Stop/offline-post/restart recovery verified: events grew from 6 to 9; comments from 5 to 8, one per message.
 - [ ] Test process termination during a real remote write and inspect/reconcile outcome.
-- [ ] Verify persistent host storage and a backup/restore procedure for the demo deployment.
+- [x] Local backup restored into temporary database with matching row counts.
+- [ ] Verify production host storage and backup/restore after deployment.
 
 ## 6. Local testing and packaging
 
-- [x] 14 unit tests passed at recorded validation.
+- [x] Current suite: 19 unit tests and six real-Postgres integration tests passed (25 total).
 - [x] Six real-Postgres integration tests passed at recorded validation.
 - [x] ESLint and strict TypeScript check passed.
 - [x] Production TypeScript build passed.
@@ -88,7 +90,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Multi-stage production Docker image built on Node 22.
 - [x] Production image ran as uid 1000 and applied migration/connected to Postgres.
 - [x] Dependency audit reported zero known vulnerabilities at validation time.
-- [ ] Rerun affected checks after any changes arising from clarification or real-account testing.
+- [x] Full current suite after resync fix: 25 passed (19 unit + six Postgres); lint/typecheck and Docker build passed.
 
 ## 7. External accounts and configuration
 
@@ -99,9 +101,10 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [ ] Review least-privilege account/token scope before deployment.
 - [x] Create Discord test server, application and bot.
 - [x] Bot connects and startup scan succeeds.
-- [ ] Verify Message Content Intent and all channel/thread permissions with real posted messages.
+- [x] Real human-posted thread messages were read, synced and transitioned successfully.
+- [ ] Verify private/archived thread permissions live.
 - [x] Create proj-checkout text channel; verified via Discord API.
-- [ ] Create human-owned test threads and verify resulting Jira writes.
+- [x] Create human-owned test thread; CHECKOUT-2 Story and three comments verified.
 - [ ] Populate real Discord-to-Jira user mappings.
 - [x] Configure ignored local .env with real credentials.
 - [ ] Configure deployment host secrets.
@@ -121,7 +124,9 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [ ] Deploy image with real secrets, mappings and durable Postgres storage.
 - [ ] Configure HTTPS/firewall; keep database private.
 - [ ] Verify public /health returns 200 and degraded dependencies produce appropriate readiness behavior.
-- [ ] Verify host restart and bot/container restart recovery.
+- [x] Graceful local bot restart: health 200, same issue/comment counts after backfill.
+- [x] New messages posted during local bot downtime recovered once, and a further restart preserved counts.
+- [ ] Verify deployment host restart recovery.
 - [ ] Record actual public URL and image reference in README.
 - [ ] Automate host rollout only if desired; current CD publishes an image, while host deployment is manual.
 
@@ -129,12 +134,14 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 
 - [ ] Reviewer can visit public /health and receive 200.
 - [ ] Reviewer can join the test Discord server.
-- [ ] New thread creates exactly one Jira Story with correct reporter.
-- [ ] Normal message creates one correctly attributed comment body.
-- [ ] "wrapping this up, status: done" creates comment and transitions issue to Done.
-- [ ] todo/in_progress and blocked-label behavior work as documented.
+- [x] Human-owned thread creates one Jira Story (CHECKOUT-2).
+- [ ] Verify explicitly mapped reporter; current live test uses approved unmapped fallback.
+- [x] Each of three Discord messages has exactly one Jira comment with author details.
+- [x] Test status command recorded as comment and CHECKOUT-2 verified in Done.
+- [x] blocked adds label, in_progress removes it and transitions; done verified.
+- [ ] Verify todo live.
 - [ ] Repeated !resync produces a useful summary and no duplicate issues/comments.
-- [ ] Posting messages while bot is stopped, then restarting, syncs them once.
+- [x] Messages posted while bot was stopped recovered once on restart.
 - [ ] Archived/private-thread coverage is verified to the agreed scope.
 - [ ] Missing project/user mapping and unavailable transition behavior is demonstrated.
 - [ ] Fresh clone + published image + independent configured integration works from README.
@@ -155,11 +162,10 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 
 ## Recommended next order
 
-1. Set up Jira and Discord while clarification answers are pending.
-2. Configure mappings/secrets and run real-account local acceptance; fix integration failures.
-3. Apply clarification answers and rerun relevant tests.
-4. Configure Docker Hub/GitHub secrets, verify hosted CI and publish image.
-5. Deploy publicly, run all reviewer acceptance checks and collect evidence.
-6. Finish URLs/access/transcripts/documentation and submit.
+1. Finish Docker Hub/GitHub secret setup and choose a public host.
+2. Verify real !resync replies and remaining status/thread/reporter cases.
+3. Publish the image after full CI checks; pull it independently.
+4. Deploy publicly, verify health/recovery and collect screenshots.
+5. Finish invite/reviewer access, URLs, transcripts and submission review.
 
 Overall: core implementation and recorded local validation are done. Real integration, hosted delivery and submission acceptance remain open. No numerical completion percentage is assigned because those open steps can reveal implementation changes.

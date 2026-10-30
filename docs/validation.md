@@ -33,3 +33,11 @@ Updated missing-user handling and added regression tests for mapped/unmapped rep
 ## Full local-account follow-up
 
 Rebuilt the application and started Docker Compose with configured Jira/Discord accounts. Read-only checks verified Jira authentication, CHECKOUT, Story metadata, all six required Jira permissions, Discord authentication/guild access and proj-checkout discovery. Local health returned 200. Ran the current complete suite in the Node 22 build container against isolated schemas in the local Postgres service: **23 tests passed (17 unit + six integration), no skips**. See local-integration-2026-10-30.md for pending real-message acceptance checks.
+
+## Resync regression and operations follow-up
+
+Added a failing regression test for overlapping history scans, then changed concurrent resync calls to share one scan instead of rejecting the second call. Added failure-recovery coverage for a subsequent scan. Full suite after rebuilding: **25 passed** (19 unit + six Postgres tests). ESLint/typecheck and Docker build passed. Publishing workflow now also runs its tests against a Postgres service instead of skipping the integration suite.
+
+Verified a local pg_dump restore into a disposable database: events=4, mutations=5, threads=1 matched the source snapshot. Temporary restore database removed; private backup retained under ignored .local/backups (also excluded from Docker context). Production Compose override with HTTPS proxy validated without starting a public endpoint.
+
+GitHub API confirms private repository, not a fork; CI for bc1b543 succeeded. Publishing for that commit failed, with no Actions secrets configured at the time. Reviewer collaborator access remains unconfigured; branch-protection API returned 403 (no protection claim is made).

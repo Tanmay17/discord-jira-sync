@@ -1,0 +1,9 @@
+{$PUBLIC_HOST} {
+    @health path /health
+    handle @health {
+        reverse_proxy bot:3000
+    }
+    handle {
+        respond "Not found" 404
+    }
+}

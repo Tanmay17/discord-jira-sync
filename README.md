@@ -2,7 +2,7 @@
 
 TypeScript/Node service that mirrors Discord project activity into existing Jira Cloud projects using Postgres as a durable inbox and mutation journal.
 
-**Delivery status:** implemented locally; account setup and live acceptance are pending. Public health URL: **pending deployment**. Discord invite: **pending server setup**. Published Docker Hub image: **pending account/CI secrets**. Do not submit these placeholders as a completed live demo.
+**Delivery status:** running locally against real Jira/Discord accounts. Story creation, attributed comments, blocked-label handling, In Progress/Done transitions, offline history recovery and repeated startup replay are verified. Image publication, resync command acceptance and public deployment remain pending. Public health URL: **pending deployment**. Discord invite: **pending server setup**. Published Docker Hub image: **pending account/CI secrets**. Do not submit these placeholders as a completed live demo.
 
 ## Behavior
 
@@ -61,7 +61,7 @@ For safe recovery, follow [operations](docs/operations.md); do not delete journa
 
 ## CI/CD and deployment
 
-Every push and PR runs type checking, tests and compilation. A push to main additionally builds/pushes Docker Hub `latest` and commit-SHA tags after checks. Set GitHub Actions secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. Protect main so updates require passing PR checks. Deploy the immutable SHA image on a persistent host behind HTTPS; see [deployment](docs/deployment.md). Publishing an image does not automatically roll out the host.
+Every push and PR runs type checking, tests and compilation. A push to main additionally builds/pushes Docker Hub `latest` and commit-SHA tags after checks. Set GitHub Actions secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN`. Protect main so updates require passing PR checks. Deploy the immutable SHA image on a persistent host; the optional compose.production.yml adds an HTTPS proxy and removes direct port-3000 exposure (Compose 2.24.4+). See [deployment](docs/deployment.md). Publishing an image does not automatically roll out the host.
 
 ## Acceptance walkthrough
 

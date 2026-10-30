@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-30",
+  "issue": "CHECKOUT-2",
+  "beforeStop": {
+    "events": 6,
+    "comments": 5,
+    "status": "In Progress"
+  },
+  "whileStopped": {
+    "queuedEvents": 6
+  },
+  "afterRecovery": {
+    "events": 9,
+    "comments": 8,
+    "status": "Done",
+    "allEventsDone": true,
+    "allMessageMarkersExactlyOnce": true
+  },
+  "blockedLabelAddedThenCleared": true,
+  "failedOrUncertainEvents": 0,
+  "secondRestart": {
+    "events": 9,
+    "comments": 8,
+    "status": "Done",
+    "allEventsDone": true,
+    "allMessageMarkersExactlyOnce": true,
+    "health": 200
+  }
+}

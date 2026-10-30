@@ -15,3 +15,19 @@ CI/CD publishes on main but host rollout is manual: update SYNC_IMAGE to the new
 ## Verification record
 
 Local typecheck/tests/build and Docker validation are recorded in docs/validation.md. Live health, Jira/Discord acceptance, CI execution in GitHub and Docker Hub publication remain pending until those external accounts are configured. A local Docker test is not proof of a public deployment.
+
+## Included HTTPS reverse proxy
+
+For an always-on VM with a domain pointing to its public IP, the repository includes compose.production.yml and deploy/Caddyfile. Requires Docker Compose 2.24.4+ for the !reset override. Set PUBLIC_HOST to the DNS hostname (without https:// or a path) and SYNC_IMAGE to the published SHA-tagged image in the host's .env. Allow TCP 80/443 for Caddy certificate issuance and HTTPS; keep Postgres and bot port 3000 private.
+
+```sh
+docker compose -f docker-compose.yml -f compose.production.yml pull
+docker compose -f docker-compose.yml -f compose.production.yml up -d --no-build
+curl -i https://YOUR_HOST/health
+```
+
+Use the same two -f arguments for future production restarts/logs/upgrades. The override removes the development port-3000 publication and exposes only the reverse proxy. Caddy forwards /health; other paths return 404. This configuration does not create a VM, register a domain, configure DNS, or replace the required live-host verification.
+
+## Backup verification
+
+Run `python3 scripts/backup-check.py` from the local compose workspace to save a restricted backup under ignored .local/backups and restore it into a new disposable database. It compares row counts and removes only the temporary database. The bot's database is not modified. Backups contain private Discord messages and mutation evidence: keep them private, encrypted on the deployment host, and out of Git and Docker build contexts. On a busy server, pause ingestion or choose a quiet window to compare a consistent snapshot.

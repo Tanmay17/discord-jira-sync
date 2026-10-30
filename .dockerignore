@@ -5,3 +5,5 @@ dist
 config/users.json
 prompts
 tests
+
+.local

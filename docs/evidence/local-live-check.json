@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-30",
+  "issue": "CHECKOUT-2",
+  "issueType": "Story",
+  "status": "Done",
+  "processedEvents": 4,
+  "jiraCommentCount": 3,
+  "eachDiscordMessageHasExactlyOneComment": true,
+  "originalAuthorDetailsPresent": true,
+  "failedOrUncertainEvents": 0,
+  "healthAfterRestart": 200,
+  "sameIssueAndCommentCountsAfterRestart": true,
+  "scope": "Verified by reading live Jira and local Postgres before and after a graceful local bot restart. Offline posting and resync command remain separate checks."
+}

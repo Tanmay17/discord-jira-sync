@@ -2,6 +2,7 @@ import {
   Client,
   GatewayIntentBits,
   ChannelType,
+  Events,
   type ThreadChannel,
   type Message,
   type TextChannel,
@@ -18,6 +19,7 @@ export class Discord {
   });
   ready = false;
   scanning = false;
+  private scanPromise?: Promise<void>;
   constructor(
     private store: Store,
     private guildId: string,
@@ -112,20 +114,22 @@ export class Discord {
       }
     }
   }
-  async scan() {
-    if (this.scanning)
-      throw new Error("History scan already running; retry shortly");
+  scan(): Promise<void> {
+    if (this.scanPromise) return this.scanPromise;
     this.scanning = true;
-    try {
-      const guild = await this.client.guilds.fetch(this.guildId);
-      const channels = await guild.channels.fetch();
-      for (const c of channels.values())
-        if (c?.type === ChannelType.GuildText && projectKey(c.name))
-          await this.scanChannel(c);
-      this.ready = true;
-    } finally {
+    this.scanPromise = this.performScan().finally(() => {
       this.scanning = false;
-    }
+      this.scanPromise = undefined;
+    });
+    return this.scanPromise;
+  }
+  private async performScan() {
+    const guild = await this.client.guilds.fetch(this.guildId);
+    const channels = await guild.channels.fetch();
+    for (const c of channels.values())
+      if (c?.type === ChannelType.GuildText && projectKey(c.name))
+        await this.scanChannel(c);
+    this.ready = true;
   }
   async start(token: string) {
     const report = (error: unknown) =>
@@ -144,7 +148,7 @@ export class Discord {
     this.client.on("messageCreate", (m) => {
       void this.message(m).catch(report);
     });
-    this.client.once("ready", () => {
+    this.client.once(Events.ClientReady, () => {
       void this.scan().catch(report);
     });
     await this.client.login(token);
