@@ -1,6 +1,6 @@
 # Assignment completion checklist
 
-Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; core live mutations and offline recovery verified; publishing/public host remain pending. This is a status inventory, not a fresh rerun of validation.
+Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; core live mutations and offline recovery verified; publishing verified; public host remains pending. This is a status inventory, not a fresh rerun of validation.
 
 Legend: checked = completed with available evidence; unchecked = pending or unverified. Implementation does not imply real-account acceptance. Local validation recorded on 2026-10-28: 20 tests passed, ESLint/typecheck/build passed, Compose validated, production image built and connected to Postgres as a non-root user. See validation.md.
 
@@ -119,7 +119,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Provide Compose with persistent Postgres volume and restart policy.
 - [x] Write host deployment and rollback runbook.
 - [x] Set both Docker Hub repository secrets; confirmed names without reading values.
-- [x] CI and Docker Hub publishing passed for 016a70f.
+- [x] CI and Docker Hub publishing passed for 7946743; image includes linux/amd64 and linux/arm64.
 - [x] Docker Hub API confirms public repository and active full-SHA image tag.
 - [x] Published full-SHA image pulled and run against configured accounts: health 200, unchanged Jira counts.
 - [ ] Deploy image with real secrets, mappings and durable Postgres storage.
@@ -171,3 +171,5 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 5. Finish invite/reviewer access, URLs, transcripts and submission review.
 
 Overall: core implementation and recorded local validation are done. Real integration, hosted delivery and submission acceptance remain open. No numerical completion percentage is assigned because those open steps can reveal implementation changes.
+
+Hosting decision: Oracle account setup deferred by the user on 2026-10-30. Public deployment, DNS/TLS and reviewer access remain pending until a VM is available.

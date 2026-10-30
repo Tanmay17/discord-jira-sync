@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-30",
+  "image": "tanmays321/discord-jira-sync:794674386edf34e0f31dc1fd743d0014df529213",
+  "digest": "sha256:958ff99ffa366744f729e5272d603b6dd9c4fd425ef8b8056ddc9c542d891090",
+  "platform": "linux/arm64",
+  "pullSucceeded": true,
+  "issue": "CHECKOUT-2",
+  "events": 11,
+  "comments": 10,
+  "duplicateMarkers": 0,
+  "status": "Done",
+  "ci": "https://github.com/Tanmay17/discord-jira-sync/actions/runs/41038969761",
+  "publish": "https://github.com/Tanmay17/discord-jira-sync/actions/runs/41038969737",
+  "publicDeployment": "pending; user deferred Oracle signup"
+}

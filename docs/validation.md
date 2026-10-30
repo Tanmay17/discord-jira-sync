@@ -50,3 +50,7 @@ GitHub API confirms private repository, not a fork; CI for bc1b543 succeeded. Pu
 - Live To Do transition also passed on the published image. A subsequent command returned the test Story to Done.
 - Caddy configuration validated using the official image; no public proxy was started.
 - Transcript exporter now redacts OAuth callback query credentials in addition to common API-token patterns. A synthetic regression check passed; hidden analysis remains excluded.
+
+### Native image verification — 2026-10-30
+
+CI and publishing passed for 7946743. The linux/arm64 image pulled successfully and replaced the emulated AMD64 image locally. Jira verification after restart found CHECKOUT-2 in Done, 11 completed events, 10 comments and exactly one marker per message with author details. See evidence/native-image-check.json. Public VM deployment remains pending; Oracle signup was deferred by the user.

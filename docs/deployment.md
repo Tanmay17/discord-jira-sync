@@ -14,7 +14,7 @@ CI/CD publishes on main but host rollout is manual: update SYNC_IMAGE to the new
 
 ## Verification record
 
-Local typecheck/tests/build and Docker validation are recorded in docs/validation.md. Live health, Jira/Discord acceptance, CI execution in GitHub and Docker Hub publication remain pending until those external accounts are configured. A local Docker test is not proof of a public deployment.
+Local typecheck/tests/build and Docker validation are recorded in docs/validation.md. Local health and Jira/Discord acceptance, GitHub CI and public Docker Hub publication have been verified; see validation.md and evidence/. Public VM deployment is pending. Oracle signup was deferred by the user on 2026-10-30. A local Docker test is not proof of a public deployment.
 
 ## Included HTTPS reverse proxy
 

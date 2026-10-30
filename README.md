@@ -2,7 +2,7 @@
 
 TypeScript/Node service that mirrors Discord project activity into existing Jira Cloud projects using Postgres as a durable inbox and mutation journal.
 
-**Delivery status:** running locally against real Jira/Discord accounts. Story creation, attributed comments, blocked-label handling, In Progress/Done transitions, offline history recovery and repeated startup replay are verified. Docker Hub publication and repeated resync replies are verified; the published image has been pulled and run locally with health 200 and duplicate-free replay. Public deployment remains pending. Public health URL: **pending deployment**. Discord invite: **pending server setup**. Published Docker Hub image: [tanmays321/discord-jira-sync](https://hub.docker.com/r/tanmays321/discord-jira-sync). Verified published tag: `016a70f8f400c9487369725df9ae3c70272c1715`. Do not submit these placeholders as a completed live demo.
+**Delivery status:** running locally against real Jira/Discord accounts. Story creation, attributed comments, blocked-label handling, In Progress/Done transitions, offline history recovery and repeated startup replay are verified. Docker Hub publication and repeated resync replies are verified; the published image has been pulled and run locally with health 200 and duplicate-free replay. Public deployment remains pending. Public health URL: **pending deployment**. Discord invite: **pending server setup**. Published Docker Hub image: [tanmays321/discord-jira-sync](https://hub.docker.com/r/tanmays321/discord-jira-sync). Verified published tag: `794674386edf34e0f31dc1fd743d0014df529213`. Do not submit these placeholders as a completed live demo.
 
 ## Behavior
 
@@ -43,7 +43,7 @@ docker compose logs -f bot
 To use the published image once CI is configured:
 
 ```sh
-SYNC_IMAGE=tanmays321/discord-jira-sync:016a70f8f400c9487369725df9ae3c70272c1715 docker compose up -d --no-build
+SYNC_IMAGE=tanmays321/discord-jira-sync:794674386edf34e0f31dc1fd743d0014df529213 docker compose up -d --no-build
 ```
 
 The image still requires .env, user mapping, Postgres and permissions. Configuration is mounted read-only; secrets are never baked into the image.
