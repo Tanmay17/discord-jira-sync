@@ -38,3 +38,9 @@ Scope override: candidate relayed that the hiring team now requires implementati
 ## Assessment
 
 The core prototype and repository deliverable are implemented and have substantial recorded local end-to-end evidence. Do not describe every original requirement as verified: deployment was explicitly waived, reviewer access/sharing belongs to the candidate, process communication is only partially confirmed, and the live/testing limitations above remain. None of these should be concealed in the handoff.
+
+## Follow-up after Docker restart
+
+The database container was stopped. Started Postgres, then reran the full Docker test suite successfully: five test files, 25 tests passed, including all six real-Postgres integration tests. This supersedes the earlier database rerun limitation above.
+
+Recreated the bot container to restore database DNS resolution. Local health returned 200. Live Jira verification: CHECKOUT-2 in Done, 11 completed events, 10 comments, exactly one marker and original author details per message; counts unchanged after recovery.
