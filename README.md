@@ -93,3 +93,5 @@ Next week: real-account failure injection, incremental backfill, integration CI,
 ## Process and AI use
 
 The candidate sent clarification questions and supplied the hiring-team replies on 2026-10-30; decisions are in docs/clarifications-2026-10-30.md. Historical proposal/update drafts are retained in docs/; sending those drafts has not been independently confirmed. An actual visible-message/tool transcript snapshot and AI notes are in prompts/; regenerate the export before submission and review it for secrets. Current implementation was AI-assisted and must be reviewed and understood by the candidate. No fabricated commits, external demos or historical TDD claims.
+
+Latest requirement-by-requirement review: [assignment audit](docs/requirements-audit-2026-10-30.md), including test evidence and remaining verification limits.
