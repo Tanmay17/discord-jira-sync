@@ -6,11 +6,11 @@ TypeScript/Node service that mirrors Discord project activity into existing Jira
 
 ## Behavior
 
-- `proj-checkout` maps to Jira project `CHECKOUT`; thread maps to a Story with the mapped thread creator as reporter.
+- `proj-checkout` maps to Jira project `CHECKOUT`; thread maps to a Story with the mapped thread creator as reporter when available; unmapped authors remain identified in the description and Jira supplies the reporter default.
 - Human messages become comments with author, Jira account, source URL and timestamp. The actual Jira comment account is the integration account.
 - `status: todo|in_progress|done` resolves available transitions by target status name. Last supported token wins.
 - `status: blocked` adds `discord-blocked`; another supported status removes it.
-- `!resync` scans project history and replies with durable queue counts. Processing is asynchronous. Existing events and successful mutations are deduplicated. Missing Jira projects/mappings fail visibly in logs and the database, without project creation.
+- `!resync` scans project history and replies with durable queue counts. Processing is asynchronous. Existing events and successful mutations are deduplicated. Missing Jira projects fail visibly without project creation. Missing user mappings retain Discord author details and do not block sync.
 - Startup and five-minute recovery scans enumerate active and archived public/private threads, replay messages oldest first, and ignore bot-created threads/bot messages. Only guild text project channels are supported. Channel suffixes must contain a letter followed by alphanumerics; unsupported names are skipped.
 
 ## Architecture and recovery
@@ -90,4 +90,4 @@ Next week: real-account failure injection, incremental backfill, integration CI,
 
 ## Process and AI use
 
-Initial clarification/update drafts are in docs/. They have not been emailed. An actual visible-message/tool transcript snapshot and AI notes are in prompts/; regenerate the export before submission and review it for secrets. Current implementation was AI-assisted and must be reviewed and understood by the candidate. No fabricated commits, external demos or historical TDD claims.
+The candidate sent clarification questions and supplied the hiring-team replies on 2026-10-30; decisions are in docs/clarifications-2026-10-30.md. Historical proposal/update drafts are retained in docs/; sending those drafts has not been independently confirmed. An actual visible-message/tool transcript snapshot and AI notes are in prompts/; regenerate the export before submission and review it for secrets. Current implementation was AI-assisted and must be reviewed and understood by the candidate. No fabricated commits, external demos or historical TDD claims.

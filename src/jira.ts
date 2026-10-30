@@ -49,11 +49,8 @@ export class Jira {
       ? (undefined as T)
       : ((await response.json()) as T);
   }
-  account(id: string) {
-    const account = this.users[id];
-    if (!account)
-      throw new PermanentError(`Missing Jira user mapping for Discord ${id}`);
-    return account;
+  account(id: string): string | undefined {
+    return this.users[id];
   }
   async findIssue(thread: Thread): Promise<string | undefined> {
     const marker = `discord-thread-${thread.id}`;
@@ -79,16 +76,17 @@ export class Jira {
       (t) => t.name.toLowerCase() === "story",
     );
     if (!story) throw new PermanentError(`No Story type in ${thread.project}`);
+    const reporter = this.account(thread.authorId);
     return (
       await this.request<{ key: string }>("/issue", "POST", {
         fields: {
           project: { key: thread.project },
           issuetype: { id: story.id },
           summary: thread.title.slice(0, 255),
-          reporter: { accountId: this.account(thread.authorId) },
+          ...(reporter ? { reporter: { accountId: reporter } } : {}),
           labels: [`discord-thread-${thread.id}`],
           description: adf(
-            `Discord milestone: https://discord.com/channels/${thread.guildId}/${thread.id}`,
+            `Discord milestone: https://discord.com/channels/${thread.guildId}/${thread.id}\nOriginal author: ${thread.author ?? "Discord user"} (Discord ${thread.authorId}; ${reporter ? `Jira ${reporter}` : "no Jira account mapped"})`,
           ),
         },
       })

@@ -5,7 +5,7 @@
 1. Create an Atlassian Jira Cloud free sandbox and a software project with key CHECKOUT. Jira project creation is intentionally not implemented by the bot.
 2. Confirm Story is available, reporter is editable and To Do / In Progress / Done exist. Create a scoped integration user with Browse Projects, Create Issues, Add Comments, Edit Issues, Transition Issues and Modify Reporter permissions for that project.
 3. Create an API token and enter it directly in local .env or host secrets, not chat or Git. Use the sandbox HTTPS base URL and the token owner's email.
-4. Copy each user's Atlassian account ID from their profile URL or the Jira user lookup API into config/users.json, keyed by Discord user ID. Map the person creating the thread as well as everyone posting messages.
+4. Copy each user's Atlassian account ID from their profile URL or the Jira user lookup API into config/users.json, keyed by Discord user ID. Map users who have Jira accounts. Unmapped users retain their Discord details; their thread creation omits an explicit reporter so Jira supplies its default.
 5. The authenticated user creates all comments; Discord attribution is included in their bodies. If a token's scopes require Atlassian's gateway URL rather than the tenant URL, use a compatible token/auth configuration; this prototype uses tenant URL + Basic email/token authentication.
 
 ## Discord

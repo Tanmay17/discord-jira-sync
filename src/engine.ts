@@ -44,8 +44,6 @@ export class Engine {
   ) {}
   async sync(event: Event) {
     const thread = event.thread;
-    this.jira.account(thread.authorId);
-    if (event.message) this.jira.account(event.message.authorId);
     let key = await this.store.issue(thread.id);
     if (!key) {
       key = await once(
@@ -60,6 +58,7 @@ export class Engine {
     }
     const message = event.message;
     if (!message) return;
+    const account = this.jira.account(message.authorId);
     await once(
       this.store,
       `comment:${message.id}`,
@@ -68,7 +67,7 @@ export class Engine {
       async () => {
         await this.jira.comment(
           key!,
-          `${message.author} (Discord ${message.authorId}; Jira ${this.jira.account(message.authorId)}) at ${message.timestamp}\n${message.content}\nhttps://discord.com/channels/${thread.guildId}/${thread.id}/${message.id}\n[discord-message:${message.id}]`,
+          `${message.author} (Discord ${message.authorId}; ${account ? `Jira ${account}` : "no Jira account mapped"}) at ${message.timestamp}\n${message.content}\nhttps://discord.com/channels/${thread.guildId}/${thread.id}/${message.id}\n[discord-message:${message.id}]`,
         );
         return true;
       },

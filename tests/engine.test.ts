@@ -1,5 +1,5 @@
 import { expect, it, vi } from "vitest";
-import { once } from "../src/engine.js";
+import { Engine, once } from "../src/engine.js";
 import { UncertainWrite } from "../src/domain.js";
 function store(state?: { state: string; result: unknown }) {
   return {
@@ -54,4 +54,40 @@ it("journals intent before attempting a remote write", async () => {
     ),
   ).rejects.toThrow("crash");
   expect(s.complete).not.toHaveBeenCalled();
+});
+
+it("syncs unmapped authors with their Discord details in the comment", async () => {
+  const journal = { ...store(), issue: vi.fn(async () => "TEST-1") };
+  const jira = {
+    account: vi.fn(() => undefined),
+    comment: vi.fn(async () => {}),
+  };
+  const engine = new Engine(
+    journal as unknown as import("../src/store.js").Store,
+    jira as unknown as import("../src/jira.js").Jira,
+  );
+  await engine.sync({
+    id: "message:42",
+    thread: {
+      id: "1",
+      guildId: "2",
+      channelId: "3",
+      project: "TEST",
+      title: "Milestone",
+      authorId: "99",
+    },
+    message: {
+      id: "42",
+      authorId: "100",
+      author: "Original Person",
+      content: "hello",
+      timestamp: "2026-10-30T00:00:00Z",
+    },
+  });
+  expect(jira.comment).toHaveBeenCalledWith(
+    "TEST-1",
+    expect.stringContaining(
+      "Original Person (Discord 100; no Jira account mapped)",
+    ),
+  );
 });

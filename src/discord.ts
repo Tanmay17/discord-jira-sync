@@ -37,6 +37,7 @@ export class Discord {
       project,
       title: t.name,
       authorId: t.ownerId,
+      author: owner.tag,
     };
   }
   async message(m: Message) {

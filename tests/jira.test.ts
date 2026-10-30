@@ -88,7 +88,36 @@ describe("Jira boundary", () => {
       update: { labels: [{ add: "discord-blocked" }] },
     });
   });
-  it("rejects an unmapped user rather than silently substituting", () => {
-    expect(() => jira().account("unknown")).toThrow(PermanentError);
+  it("allows an unmapped user without inventing a Jira identity", () => {
+    expect(jira().account("unknown")).toBeUndefined();
   });
+  it.each([true, false])(
+    "creates a Story with mapped reporter when available: %s",
+    async (mapped) => {
+      const fetch = vi
+        .fn()
+        .mockResolvedValueOnce(Response.json({ key: "TEST" }))
+        .mockResolvedValueOnce(
+          Response.json({ issueTypes: [{ id: "100", name: "Story" }] }),
+        )
+        .mockResolvedValueOnce(Response.json({ key: "TEST-1" }));
+      vi.stubGlobal("fetch", fetch);
+      await jira().create({
+        id: "456",
+        guildId: "789",
+        channelId: "111",
+        project: "TEST",
+        title: "Milestone",
+        authorId: mapped ? "123" : "999",
+        author: "Person",
+      });
+      const fields = JSON.parse(fetch.mock.calls[2]?.[1]?.body).fields;
+      if (mapped) expect(fields.reporter).toEqual({ accountId: "account" });
+      else expect(fields).not.toHaveProperty("reporter");
+      expect(JSON.stringify(fields.description)).toContain("Person");
+      expect(JSON.stringify(fields.description)).toContain(
+        mapped ? "123" : "999",
+      );
+    },
+  );
 });

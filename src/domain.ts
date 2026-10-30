@@ -6,6 +6,7 @@ export interface Thread {
   project: string;
   title: string;
   authorId: string;
+  author?: string;
 }
 export interface Event {
   id: string;

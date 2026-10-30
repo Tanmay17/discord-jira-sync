@@ -8,7 +8,7 @@ Use psql inside the compose db service. `SELECT id,state,error FROM events WHERE
 
 ## Definitive failure
 
-For missing mapping/project/transition or permission errors, fix the underlying configuration first. Restart after user-map changes. Change the specific failed event to pending and clear its error using a parameterized administrative client or a carefully quoted psql statement. Do not bulk reset the queue. A previous successful comment mutation remains done, so retrying a failed transition does not repeat that comment.
+For missing project/transition or permission errors, fix the underlying configuration first. Restart after user-map changes. Missing mappings now use Discord attribution without blocking; historical mapping failures can be requeued after upgrading. Change the specific failed event to pending and clear its error using a parameterized administrative client or a carefully quoted psql statement. Do not bulk reset the queue. A previous successful comment mutation remains done, so retrying a failed transition does not repeat that comment.
 
 ## Ambiguous write
 

@@ -25,3 +25,7 @@ TEST_DATABASE_URL=postgres://USER:PASSWORD@HOST:PORT/TEST_DATABASE npm test
 Without TEST_DATABASE_URL, 14 unit tests run and six database integration tests are explicitly skipped. GitHub CI supplies a Postgres service and runs all tests. Database tests create an isolated temporary schema, then remove it.
 
 Not yet verified: real Jira/Discord end-to-end behavior, real permissions, host/public health URL, reviewer invite/access, GitHub-hosted workflow results, Docker Hub publication/pull and the public live demo. These need the candidate's external accounts and secrets. Local mocks and container smoke tests are not substitutes for those acceptance steps.
+
+## Clarification follow-up — 2026-10-30
+
+Updated missing-user handling and added regression tests for mapped/unmapped reporters and unmapped comment authors. The new Jira tests were observed failing before implementation, then passing after the change. ESLint/typecheck and production build passed. Current unit run: **17 passed**; the six Postgres tests were explicitly skipped because TEST_DATABASE_URL was not configured for this run. The previous 20-test full validation remains historical evidence, not a claim that the updated 23-test suite has been fully rerun. Live account checks remain pending.
