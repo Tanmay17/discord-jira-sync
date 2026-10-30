@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-30",
+  "image": "tanmays321/discord-jira-sync:016a70f8f400c9487369725df9ae3c70272c1715",
+  "digest": "sha256:2fd780e24904c9b5de1e54e1987c187a52e004d83085b70b3cc3437a5378679f",
+  "repositoryPublic": true,
+  "tagActive": true,
+  "pullSucceeded": true,
+  "platform": "linux/amd64",
+  "localHost": "linux/arm64 (Docker Desktop emulation)",
+  "runtimeHealth": 200,
+  "issue": "CHECKOUT-2",
+  "events": 9,
+  "comments": 8,
+  "duplicateMarkers": 0,
+  "ci": "https://github.com/Tanmay17/discord-jira-sync/actions/runs/41036318792",
+  "publish": "https://github.com/Tanmay17/discord-jira-sync/actions/runs/41036318912"
+}

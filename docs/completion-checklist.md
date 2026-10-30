@@ -61,7 +61,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Ignore bot messages and bot-created threads.
 - [x] Implement !resync scan and in-channel durable queue summary.
 - [ ] Verify gateway intents, thread visibility and permissions on a real server.
-- [ ] Verify actual resync replies and explain that processing finishes asynchronously.
+- [x] Two resync commands received summaries explaining asynchronous processing; counts stayed unchanged.
 - [x] Record delegated thread-scope decision: support visible public/private threads.
 - [ ] Verify permissions and unsupported project channel handling live.
 
@@ -108,7 +108,7 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [ ] Populate real Discord-to-Jira user mappings.
 - [x] Configure ignored local .env with real credentials.
 - [ ] Configure deployment host secrets.
-- [ ] Create Docker Hub repository and access token.
+- [x] Docker Hub account/repository and publishing token configured.
 - [ ] Select persistent public deployment host or request the offered VM.
 
 ## 8. CI/CD and deployment
@@ -118,9 +118,10 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Implement /health readiness endpoint and Docker health check.
 - [x] Provide Compose with persistent Postgres volume and restart policy.
 - [x] Write host deployment and rollback runbook.
-- [ ] Set DOCKERHUB_USERNAME and DOCKERHUB_TOKEN GitHub Actions secrets.
-- [ ] Verify hosted CI passes and publishing workflow succeeds.
-- [ ] Verify Docker Hub SHA image exists and can be pulled by reviewers.
+- [x] Set both Docker Hub repository secrets; confirmed names without reading values.
+- [x] CI and Docker Hub publishing passed for 016a70f.
+- [x] Docker Hub API confirms public repository and active full-SHA image tag.
+- [x] Published full-SHA image pulled and run against configured accounts: health 200, unchanged Jira counts.
 - [ ] Deploy image with real secrets, mappings and durable Postgres storage.
 - [ ] Configure HTTPS/firewall; keep database private.
 - [ ] Verify public /health returns 200 and degraded dependencies produce appropriate readiness behavior.
@@ -139,8 +140,9 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 - [x] Each of three Discord messages has exactly one Jira comment with author details.
 - [x] Test status command recorded as comment and CHECKOUT-2 verified in Done.
 - [x] blocked adds label, in_progress removes it and transitions; done verified.
-- [ ] Verify todo live.
-- [ ] Repeated !resync produces a useful summary and no duplicate issues/comments.
+- [x] To Do transition verified live on the published image.
+- [x] Two !resync commands each received a done: 9 summary.
+- [x] Jira counts unchanged after repeated resync: one issue, eight comments, nine completed events.
 - [x] Messages posted while bot was stopped recovered once on restart.
 - [ ] Archived/private-thread coverage is verified to the agreed scope.
 - [ ] Missing project/user mapping and unavailable transition behavior is demonstrated.

@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-30",
+  "projectChannel": "proj-checkout",
+  "humanCommands": 2,
+  "botReplies": 2,
+  "summary": "done: 9",
+  "before": {
+    "issues": 1,
+    "comments": 8,
+    "events": 9
+  },
+  "verification": "Both commands received Discord bot replies; live Jira re-read confirmed unchanged counts and one marker match per message.",
+  "after": {
+    "issues": 1,
+    "comments": 8,
+    "events": 9,
+    "status": "Done",
+    "allMarkersExactlyOnce": true
+  }
+}

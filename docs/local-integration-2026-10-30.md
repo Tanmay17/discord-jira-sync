@@ -51,3 +51,7 @@ Still pending: explicit !resync reply/repeat test, blocked-label addition/remova
 - GitHub authenticated API confirms private non-fork repository and successful hosted CI for bc1b543. Publishing failed with no Actions secrets configured; secret setup requested from candidate.
 - Local database backup/restore passed. Production HTTPS Compose override validated but not deployed.
 - Full automated suite after resync concurrency fix: 25 passed.
+
+## Published image and resync acceptance
+
+The published image tanmays321/discord-jira-sync:016a70f8f400c9487369725df9ae3c70272c1715 was pulled and started using the existing local configuration. Health returned 200. Two !resync commands received bot replies with done: 9, and Jira counts remained unchanged. To Do was subsequently tested successfully. Public hosting remains pending account/VM availability; no laptop tunnel is presented as deployment.

@@ -27,5 +27,7 @@ for line in source.read_text().splitlines():
 text = '\n'.join(json.dumps(record, ensure_ascii=False) for record in records) + '\n'
 # Known token formats; manually review exports for other credentials before committing.
 text = re.sub(r'(?:gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,})', '[REDACTED_TOKEN]', text)
+# Browser sign-in callbacks can contain one-time authorization codes and CSRF state.
+text = re.sub(r'(?i)([?&](?:code|state|access_token|refresh_token|id_token|token)=)[A-Za-z0-9._~%+/-]+', r'\1[REDACTED_AUTH]', text)
 target.write_text(text)
 print(f'Exported {len(records)} records to {target}; review for secrets before committing.')

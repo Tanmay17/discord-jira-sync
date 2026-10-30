@@ -41,3 +41,12 @@ Added a failing regression test for overlapping history scans, then changed conc
 Verified a local pg_dump restore into a disposable database: events=4, mutations=5, threads=1 matched the source snapshot. Temporary restore database removed; private backup retained under ignored .local/backups (also excluded from Docker context). Production Compose override with HTTPS proxy validated without starting a public endpoint.
 
 GitHub API confirms private repository, not a fork; CI for bc1b543 succeeded. Publishing for that commit failed, with no Actions secrets configured at the time. Reviewer collaborator access remains unconfigured; branch-protection API returned 403 (no protection claim is made).
+
+## Published artifact and command acceptance
+
+- Hosted CI and Docker Hub publishing succeeded for 016a70f8f400c9487369725df9ae3c70272c1715. Public Docker Hub metadata confirms the SHA tag is active.
+- Pulled the published linux/amd64 image, replaced the local-build container with it, verified health 200 and unchanged issue/comment counts. The Mac is ARM64, so Docker Desktop used platform emulation.
+- Two human !resync commands each received a done: 9 reply. Jira re-read confirmed one issue and eight comments, with one marker match per message.
+- Live To Do transition also passed on the published image. A subsequent command returned the test Story to Done.
+- Caddy configuration validated using the official image; no public proxy was started.
+- Transcript exporter now redacts OAuth callback query credentials in addition to common API-token patterns. A synthetic regression check passed; hidden analysis remains excluded.
