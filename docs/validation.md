@@ -29,3 +29,7 @@ Not yet verified: real Jira/Discord end-to-end behavior, real permissions, host/
 ## Clarification follow-up — 2026-10-30
 
 Updated missing-user handling and added regression tests for mapped/unmapped reporters and unmapped comment authors. The new Jira tests were observed failing before implementation, then passing after the change. ESLint/typecheck and production build passed. Current unit run: **17 passed**; the six Postgres tests were explicitly skipped because TEST_DATABASE_URL was not configured for this run. The previous 20-test full validation remains historical evidence, not a claim that the updated 23-test suite has been fully rerun. Live account checks remain pending.
+
+## Full local-account follow-up
+
+Rebuilt the application and started Docker Compose with configured Jira/Discord accounts. Read-only checks verified Jira authentication, CHECKOUT, Story metadata, all six required Jira permissions, Discord authentication/guild access and proj-checkout discovery. Local health returned 200. Ran the current complete suite in the Node 22 build container against isolated schemas in the local Postgres service: **23 tests passed (17 unit + six integration), no skips**. See local-integration-2026-10-30.md for pending real-message acceptance checks.

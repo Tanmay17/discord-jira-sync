@@ -1,6 +1,6 @@
 # Assignment completion checklist
 
-Review date: 2026-10-29. This is a status inventory, not a fresh rerun of validation.
+Review date: 2026-10-30. See local-integration-2026-10-30.md for account checks; live mutations remain pending. This is a status inventory, not a fresh rerun of validation.
 
 Legend: checked = completed with available evidence; unchecked = pending or unverified. Implementation does not imply real-account acceptance. Local validation recorded on 2026-10-28: 20 tests passed, ESLint/typecheck/build passed, Compose validated, production image built and connected to Postgres as a non-root user. See validation.md.
 
@@ -92,14 +92,19 @@ Legend: checked = completed with available evidence; unchecked = pending or unve
 
 ## 7. External accounts and configuration
 
-- [ ] Create/configure Jira Cloud sandbox and CHECKOUT software project.
-- [ ] Ensure Story, editable reporter, labels and required workflow transitions are available.
-- [ ] Configure least-privilege Jira integration account/token.
-- [ ] Create Discord test server, application and bot.
-- [ ] Enable Message Content Intent and invite bot with required permissions.
-- [ ] Create proj-checkout text channel and test threads.
+- [x] Create/configure Jira Cloud sandbox and CHECKOUT software project.
+- [x] Verify Story type and required Jira permissions.
+- [ ] Verify actual reporter, labels and workflow transitions through live writes.
+- [x] Configure Jira authentication; required project permissions verified.
+- [ ] Review least-privilege account/token scope before deployment.
+- [x] Create Discord test server, application and bot.
+- [x] Bot connects and startup scan succeeds.
+- [ ] Verify Message Content Intent and all channel/thread permissions with real posted messages.
+- [x] Create proj-checkout text channel; verified via Discord API.
+- [ ] Create human-owned test threads and verify resulting Jira writes.
 - [ ] Populate real Discord-to-Jira user mappings.
-- [ ] Put real credentials in local/host secrets; never in chat, Git or screenshots.
+- [x] Configure ignored local .env with real credentials.
+- [ ] Configure deployment host secrets.
 - [ ] Create Docker Hub repository and access token.
 - [ ] Select persistent public deployment host or request the offered VM.
 
